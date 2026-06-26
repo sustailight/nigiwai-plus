@@ -1,0 +1,20 @@
+# ===== 公開しないもの（未使用・内部用アセット） =====
+# img/ は使用中のものだけ公開する
+img/*
+!img/event.png
+!img/event2.png
+!img/result-ads.png
+!img/result-line.png
+!img/result-seo.png
+!img/daihyo.jpg
+!img/nigiwaiplus-title-trim.png
+
+# 公開フォルダ直下に置かれた内部資料の元ファイル
+/集客支援サービス*.pdf
+/集客支援サービス*.pptx
+/*.pptx
+
+# OS / エディタ
+Thumbs.db
+.DS_Store
+*.tmp

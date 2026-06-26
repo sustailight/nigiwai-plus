@@ -1,0 +1,526 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600;700;900&display=swap');
+
+/* =========================================================
+   にぎわいプラス LP — デザインシステム
+   方針：リッチさより「信頼・安心」。白基調・広い余白・色は最小限。
+   緑＝信頼の軸（見出し・CTA）、ゴールドは細い差し色だけ。
+   グラデ・質感・派手な装飾を排し、クリーンで誠実に。
+   ========================================================= */
+
+:root {
+    --green: #0D3B12;
+    --green-light: #1B5E20;
+    --gold: #C5A028;
+    --gold-light: #E5C158;
+    /* 旧暖色（terracotta/coral）は信頼トーンに合わせ緑へ寄せる */
+    --terra: #1B5E20;
+    --terra-deep: #15532B;
+    --coral: #2E8B57;
+    --bg: #FFFFFF;
+    --bg-alt: #F4F7F5;
+    --cream: #F4F7F5;
+    --ink: #243029;
+    --mute: #5E6B64;
+    --line: #E5EAE7;
+    --white: #FFFFFF;
+    --shadow: 0 12px 32px rgba(20, 40, 30, 0.07);
+    --shadow-soft: 0 4px 16px rgba(20, 40, 30, 0.05);
+    --radius: 14px;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --maxw: 1080px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.9;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1.45;
+    letter-spacing: 0.01em;
+}
+
+p { letter-spacing: 0.01em; }
+a { color: inherit; }
+
+.num { font-family: 'Montserrat', sans-serif; font-weight: 800; letter-spacing: -0.01em; }
+
+/* 強調は細いアンダーラインのみ（控えめ） */
+.mark {
+    background: linear-gradient(transparent 86%, rgba(197, 160, 40, 0.45) 86%);
+    padding: 0 0.04em;
+    font-weight: 700;
+}
+.green { color: var(--green); }
+.terra { color: var(--green-light); }
+
+/* ---------- レイアウト ---------- */
+.wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+.section { padding: clamp(64px, 9vw, 120px) 0; position: relative; }
+.narrow { max-width: 760px; margin: 0 auto; }
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    color: var(--green-light);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+.eyebrow::before { content: ""; width: 24px; height: 2px; background: var(--gold); }
+.section-title { font-size: clamp(1.55rem, 4vw, 2.35rem); margin-bottom: 14px; }
+.lead { color: var(--mute); font-size: 1.02rem; margin-bottom: 8px; }
+
+/* ---------- ボタン ---------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 17px 30px;
+    border-radius: 10px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease);
+    line-height: 1.3;
+}
+/* 主CTA＝信頼の緑（ゴールドの華やかさは使わない） */
+.btn-gold {
+    background: var(--green);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(13, 59, 20, 0.16);
+}
+.btn-gold:hover { background: var(--green-light); transform: translateY(-2px); box-shadow: 0 10px 24px rgba(13, 59, 20, 0.22); }
+.btn-gold .arrow { font-family: 'Montserrat'; font-weight: 800; }
+.btn-ghost {
+    background: #fff;
+    color: var(--green);
+    border: 1.5px solid var(--line);
+}
+.btn-ghost:hover { border-color: var(--green); transform: translateY(-2px); }
+.btn-sm { padding: 12px 22px; font-size: 0.9rem; }
+.btn-block { width: 100%; }
+.cta-note { display: block; margin-top: 12px; font-size: 0.82rem; color: var(--mute); }
+
+/* ---------- ヘッダー ---------- */
+header {
+    position: fixed;
+    top: 0; left: 0; width: 100%;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+}
+header.scrolled { background: rgba(255, 255, 255, 0.97); border-bottom: 1px solid var(--line); }
+.head-inner {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    height: 68px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.brand { display: flex; align-items: center; gap: 11px; text-decoration: none; }
+.brand-logo { height: 30px; width: auto; display: block; }
+.brand .mark-svg { width: 26px; height: 26px; flex: none; }
+.brand .lockup { display: flex; flex-direction: column; line-height: 1.1; }
+.brand .b-main { font-family: 'Montserrat', sans-serif; font-weight: 800; letter-spacing: 0.14em; font-size: 0.86rem; color: var(--green); }
+.brand .b-sub { font-family: 'Noto Serif JP', serif; font-weight: 600; font-size: 0.74rem; color: var(--mute); letter-spacing: 0.04em; }
+.nav { display: flex; align-items: center; gap: 26px; }
+.nav a { text-decoration: none; font-size: 0.86rem; font-weight: 500; color: var(--ink); position: relative; transition: color 0.25s; }
+.nav a:not(.btn)::after { content: ""; position: absolute; left: 0; bottom: -5px; width: 0; height: 1.5px; background: var(--green); transition: width 0.3s var(--ease); }
+.nav a:not(.btn):hover { color: var(--green); }
+.nav a:not(.btn):hover::after { width: 100%; }
+.nav .btn { padding: 10px 18px; font-size: 0.85rem; }
+.nav a.btn-gold { color: #fff; }
+.nav a.btn-gold::after { display: none; }
+
+.burger { display: none; flex-direction: column; gap: 6px; background: none; border: none; cursor: pointer; padding: 6px; }
+.burger span { width: 26px; height: 2px; background: var(--green); transition: 0.3s var(--ease); }
+.burger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.burger.active span:nth-child(2) { opacity: 0; }
+.burger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* ---------- ヒーロー（白基調・中央／写真は下にクリーンに） ---------- */
+.hero { position: relative; }
+.hero-center {
+    text-align: center;
+    padding: clamp(116px, 15vw, 156px) 0 clamp(48px, 7vw, 80px);
+    background: var(--bg);
+}
+.hero-inner { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+.hero-logo {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 6.6vw, 3.2rem);
+    margin-bottom: 20px;
+    letter-spacing: 0.02em;
+}
+.hero-logo .hl-1 { color: var(--green); }
+.hero-logo .hl-x { color: var(--gold); margin: 0 0.12em; font-family: 'Montserrat', sans-serif; font-weight: 800; }
+.hero-logo .hl-2 { color: var(--green-light); }
+.hero-kicker {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    color: var(--green-light);
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 7px 18px;
+    margin-bottom: 26px;
+}
+.hero-center h1 { font-size: clamp(1.95rem, 6vw, 3.05rem); line-height: 1.36; margin-bottom: 24px; letter-spacing: 0.01em; }
+.hero-sub { font-size: 1.06rem; color: var(--ink); }
+.hero-sub strong { color: var(--green); font-weight: 700; }
+.hero-center .hero-sub { margin: 0 auto 30px; max-width: 34em; }
+.hero-badges { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px; }
+.hero-badges .hb {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 24px;
+    font-size: 0.9rem;
+    color: var(--ink);
+    line-height: 1.3;
+    box-shadow: var(--shadow-soft);
+}
+.hero-badges .hb b { color: var(--green); font-size: 1.45rem; margin: 0 1px; }
+.hero-badges .hb small { display: block; font-size: 0.72rem; color: var(--mute); margin-top: 3px; font-weight: 500; }
+.hero-btns { display: flex; flex-wrap: wrap; gap: 14px; }
+.hero-center .hero-btns { justify-content: center; }
+.hero-fine { font-size: 0.8rem; color: var(--mute); }
+.hero-center .hero-fine { margin-top: 22px; }
+/* ヒーロー写真：白地に置く、角丸＋薄い枠の清潔な帯 */
+.hero-figure {
+    width: 100%;
+    max-width: var(--maxw);
+    margin: clamp(40px, 6vw, 64px) auto 0;
+    padding: 0 24px;
+}
+.hero-figure img {
+    width: 100%;
+    height: clamp(220px, 38vw, 420px);
+    object-fit: cover;
+    object-position: center 38%;
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    display: block;
+}
+
+/* ---------- 悩み（2つの痛み＋チェックリスト） ---------- */
+.pain { background: var(--bg-alt); }
+.pain-lead { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 48px; }
+.pain-q {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--green);
+    border-radius: 0 12px 12px 0;
+    padding: 24px 26px;
+}
+.pain-q h3 { color: var(--green); font-size: 1.18rem; margin-bottom: 8px; }
+.pain-q p { color: var(--mute); font-size: 0.94rem; }
+.section-title.center { text-align: center; }
+.checklist { list-style: none; margin: 32px auto 28px; max-width: 760px; display: grid; gap: 14px; }
+.checklist li {
+    display: flex; gap: 16px; align-items: flex-start;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 22px;
+    font-size: 1.02rem;
+    font-weight: 500;
+    transition: box-shadow 0.25s var(--ease);
+}
+.checklist li:hover { box-shadow: var(--shadow-soft); }
+.checklist .box {
+    flex: none; width: 26px; height: 26px;
+    border-radius: 7px;
+    border: 2px solid var(--green);
+    color: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 0.9rem; margin-top: 2px;
+}
+.pain-close { font-size: 1.1rem; font-weight: 700; color: var(--green); font-family: 'Noto Serif JP', serif; line-height: 1.8; text-align: center; }
+
+/* ---------- 実績（白地・カード・数字は緑） ---------- */
+.results { background: #fff; }
+.result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 44px; }
+.result-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+}
+.rc-photo { height: 190px; background: var(--bg-alt); position: relative; }
+.rc-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rc-photo.noimg { background: repeating-linear-gradient(135deg, #eef2f0 0 14px, #f5f8f6 14px 28px); }
+.rc-photo.noimg::after { content: "実写が入ります"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: var(--mute); }
+.rc-body { padding: 24px 26px 22px; }
+.result-card .rc-label { font-size: 0.84rem; color: var(--mute); margin-bottom: 10px; font-weight: 600; }
+.result-card .rc-figure { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.result-card .before { font-family: 'Montserrat'; font-weight: 700; font-size: 1.15rem; color: var(--mute); }
+.result-card .arrow-r { color: var(--gold); font-family: 'Montserrat'; font-weight: 800; font-size: 1.15rem; }
+.result-card .after { font-family: 'Montserrat'; font-weight: 900; font-size: clamp(2rem, 5.5vw, 2.7rem); color: var(--green); line-height: 1; }
+.result-card .after .unit { font-size: 0.42em; margin-left: 2px; }
+.result-card .rc-desc { font-size: 0.9rem; color: var(--ink); line-height: 1.75; }
+.result-card .rc-client { display: block; margin-top: 12px; font-size: 0.78rem; color: var(--mute); }
+.results .disclaimer { margin-top: 28px; font-size: 0.8rem; color: var(--mute); line-height: 1.7; text-align: center; }
+.results-cta-lead { color: var(--ink); margin-bottom: 18px; font-size: 1rem; text-align: center; }
+
+/* ---------- にぎわいプラスとは／月次サイクル（任意・再利用時用） ---------- */
+.about-grid { display: grid; grid-template-columns: 0.92fr 1.08fr; gap: clamp(36px, 6vw, 70px); align-items: center; margin-top: 40px; }
+.cycle-wrap { display: flex; justify-content: center; }
+.cycle-svg { width: 100%; max-width: 380px; height: auto; }
+.about-steps { list-style: none; display: grid; gap: 14px; }
+.about-steps li { display: flex; gap: 16px; align-items: flex-start; }
+.about-steps .st-no {
+    flex: none; width: 34px; height: 34px; border-radius: 50%;
+    background: var(--bg-alt); border: 1.5px solid var(--green);
+    color: var(--green); font-family: 'Montserrat'; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; font-size: 0.95rem;
+}
+.about-steps .st-body strong { display: block; color: var(--green); font-family: 'Noto Serif JP'; font-size: 1.02rem; }
+.about-steps .st-body span { font-size: 0.92rem; color: var(--mute); }
+.about-note { margin-top: 26px; background: var(--bg-alt); border-left: 3px solid var(--green); padding: 16px 20px; border-radius: 0 10px 10px 0; font-size: 0.96rem; font-weight: 500; }
+.tags { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 22px; }
+.tags span { font-size: 0.82rem; background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 7px 15px; color: var(--green); font-weight: 500; }
+
+/* ---------- 無料診断とは（任意・再利用時用） ---------- */
+.diag { background: var(--bg-alt); }
+.diag-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 6vw, 64px); align-items: center; margin-top: 40px; }
+.diag-points { list-style: none; display: grid; gap: 18px; }
+.diag-points li { display: flex; gap: 16px; }
+.diag-points .dp-no { flex: none; width: 30px; height: 30px; background: var(--green); color: #fff; border-radius: 8px; font-family: 'Montserrat'; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-top: 3px; }
+.diag-points strong { color: var(--green); font-family: 'Noto Serif JP'; }
+.diag-points p { font-size: 0.94rem; color: var(--ink); margin-top: 2px; }
+.why-free { margin-top: 30px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 28px; }
+.why-free h4 { color: var(--green); margin-bottom: 10px; font-size: 1.08rem; }
+.why-free p { font-size: 0.96rem; }
+.report-mock { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px; position: relative; }
+.report-mock::after { content: "御社の集客 診断レポート"; position: absolute; top: -13px; left: 24px; background: var(--green); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 4px 14px; border-radius: 999px; letter-spacing: 0.05em; }
+.report-mock .rm-row { height: 9px; border-radius: 5px; background: #eef2f0; margin-bottom: 11px; }
+.report-mock .rm-row.s { width: 55%; }
+.report-mock .rm-row.m { width: 78%; }
+.report-mock .rm-bars { display: flex; align-items: flex-end; gap: 12px; height: 110px; margin: 22px 0; }
+.report-mock .rm-bars i { flex: 1; border-radius: 6px 6px 0 0; background: var(--green-light); }
+.report-mock .rm-bars i:nth-child(2) { background: var(--green); }
+.report-mock .sticky-note { position: absolute; right: -16px; bottom: 26px; background: var(--gold-light); color: var(--green); font-size: 0.78rem; font-weight: 700; padding: 10px 14px; border-radius: 4px; box-shadow: var(--shadow-soft); font-family: 'Noto Serif JP'; }
+
+/* ---------- 流れ（任意・再利用時用） ---------- */
+.flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 44px; }
+.flow-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 28px 24px; position: relative; }
+.flow-card .fc-no { width: 40px; height: 40px; background: var(--green); color: #fff; border-radius: 50%; font-family: 'Montserrat'; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.flow-card h4 { font-size: 1.08rem; margin-bottom: 8px; }
+.flow-card p { font-size: 0.9rem; color: var(--mute); }
+.flow-card .fc-time { display: inline-block; margin-top: 12px; font-size: 0.76rem; font-weight: 700; color: var(--green); background: var(--bg-alt); padding: 3px 10px; border-radius: 999px; }
+
+/* ---------- 料金 ---------- */
+.price { background: #fff; }
+.price-card { max-width: 720px; margin: 40px auto 0; background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; }
+.price-card .pc-top { background: var(--green); color: #fff; padding: 14px 28px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.price-card .pc-badge { background: rgba(255, 255, 255, 0.16); color: #fff; font-size: 0.76rem; font-weight: 700; padding: 5px 13px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.3); }
+.price-card .pc-top span.t { font-size: 0.92rem; }
+.price-card .pc-body { padding: 32px 28px; }
+.price-card .pc-name { font-family: 'Noto Serif JP'; font-weight: 700; color: var(--green); font-size: 1.2rem; margin-bottom: 6px; }
+.price-card .pc-price { display: flex; align-items: baseline; gap: 6px; margin-bottom: 20px; }
+.price-card .pc-price .yen { font-family: 'Montserrat'; font-weight: 900; font-size: 2.6rem; color: var(--green); }
+.price-card .pc-price .per { color: var(--mute); font-size: 1rem; }
+.price-card .pc-list { list-style: none; display: grid; gap: 10px; }
+.price-card .pc-list li { display: flex; gap: 10px; font-size: 0.96rem; }
+.price-card .pc-list li::before { content: "✓"; color: var(--green); font-weight: 800; }
+.price-card .pc-add { margin-top: 22px; padding-top: 20px; border-top: 1px dashed var(--line); font-size: 0.9rem; color: var(--mute); }
+.price-card .pc-foot { background: var(--bg-alt); text-align: center; padding: 22px; border-top: 1px solid var(--line); }
+.price-card .pc-foot .big { font-family: 'Noto Serif JP'; font-weight: 700; color: var(--green); font-size: 1.14rem; }
+.price-fine { text-align: center; font-size: 0.78rem; color: var(--mute); margin-top: 16px; }
+
+/* ---------- 付帯料金 ---------- */
+.addon-head { text-align: center; font-family: 'Noto Serif JP', serif; font-weight: 700; color: var(--green); margin: 52px 0 24px; font-size: 1.1rem; }
+.addon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.addon { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 22px 22px 20px; display: flex; flex-direction: column; }
+.addon h4 { font-size: 1.02rem; margin-bottom: 8px; color: var(--green); }
+.addon p { font-size: 0.86rem; color: var(--mute); line-height: 1.7; flex: 1; }
+.addon-price { margin-top: 14px; font-family: 'Montserrat', sans-serif; font-weight: 800; color: var(--green); font-size: 1.22rem; }
+.addon-price small { font-family: 'Noto Sans JP'; font-weight: 500; font-size: 0.72rem; color: var(--mute); margin-left: 3px; }
+
+/* ---------- Q&A（任意・再利用時用） ---------- */
+.faq-list { max-width: 760px; margin: 40px auto 0; display: grid; gap: 12px; }
+.faq-item { background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.faq-item summary { list-style: none; cursor: pointer; padding: 20px 24px; display: flex; align-items: flex-start; gap: 14px; font-weight: 700; color: var(--green); font-family: 'Noto Serif JP'; font-size: 1.02rem; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary .q { flex: none; color: var(--green-light); font-family: 'Montserrat'; font-weight: 800; }
+.faq-item summary .chev { margin-left: auto; transition: transform 0.3s var(--ease); color: var(--mute); flex: none; }
+.faq-item[open] summary .chev { transform: rotate(180deg); }
+.faq-item .a { padding: 0 24px 22px 58px; font-size: 0.95rem; color: var(--ink); line-height: 1.85; }
+
+/* ---------- よくある質問 ---------- */
+.faq-sec { background: var(--bg-alt); }
+
+/* ---------- ノウハウ（note） ---------- */
+.know { background: var(--bg-alt); }
+.know-inner { max-width: 760px; text-align: center; }
+.know-inner .eyebrow { justify-content: center; }
+.know-inner .btn { margin-top: 26px; }
+
+/* ---------- 資料ダウンロード ---------- */
+.download { background: var(--bg-alt); }
+.dl-card {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(32px, 5vw, 56px);
+    align-items: center;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: clamp(28px, 5vw, 48px);
+}
+.dl-text .eyebrow { margin-bottom: 14px; }
+.dl-points { list-style: none; display: grid; gap: 10px; margin-top: 18px; }
+.dl-points li { display: flex; gap: 10px; font-size: 0.95rem; color: var(--ink); }
+.dl-points li::before { content: "✓"; color: var(--green); font-weight: 800; }
+.dl-form { box-shadow: none; border: 1px solid var(--line); padding: clamp(22px, 3vw, 30px); }
+.dl-form .btn-block { margin-top: 4px; }
+
+/* ---------- サービス（アイコンカード） ---------- */
+.service { background: var(--bg-alt); }
+.service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 44px; }
+.service-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 32px 28px; transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s var(--ease); }
+.service-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); border-color: var(--green); }
+.sc-icon { width: 52px; height: 52px; border-radius: 12px; background: var(--bg-alt); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+.sc-icon svg { width: 26px; height: 26px; }
+.service-card h3 { font-size: 1.2rem; margin-bottom: 10px; }
+.service-card p { font-size: 0.94rem; color: var(--mute); line-height: 1.8; }
+
+/* ---------- 代表メッセージ ---------- */
+.rep { background: #fff; }
+.rep-grid { display: grid; grid-template-columns: 300px 1fr; gap: clamp(32px, 5vw, 60px); align-items: center; }
+.rep-photo { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); aspect-ratio: 4 / 5; background: var(--bg-alt); }
+.rep-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rep h2 { font-size: clamp(1.4rem, 3.4vw, 2rem); margin-bottom: 20px; }
+.rep p { margin-bottom: 16px; }
+.rep-mission { font-family: 'Noto Serif JP', serif; font-weight: 700; color: var(--green); font-size: 1.18rem; margin: 22px 0 4px !important; }
+.rep .sign { margin-top: 22px; font-family: 'Noto Serif JP'; font-weight: 600; color: var(--green); }
+.rep .sign small { display: block; color: var(--mute); font-weight: 400; font-size: 0.82rem; }
+.rep-photo.noimg { display: flex; align-items: center; justify-content: center; background: repeating-linear-gradient(135deg, #eef2f0 0 14px, #f5f8f6 14px 28px); color: var(--mute); text-align: center; }
+.rep-photo.noimg .ps-label { padding: 24px; font-size: 0.86rem; line-height: 1.7; }
+
+/* ---------- 資料DL＋お問い合わせ（白地・カード） ---------- */
+.final { background: var(--bg-alt); color: var(--ink); }
+.final h2 { color: var(--green); font-size: clamp(1.5rem, 4vw, 2.2rem); }
+.final-body { font-size: 1rem; color: var(--ink); margin: 18px 0 8px; }
+.assure { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0 6px; }
+.assure span { font-size: 0.82rem; font-weight: 700; background: #fff; border: 1px solid var(--line); color: var(--green); padding: 8px 14px; border-radius: 999px; }
+.form-card { background: #fff; color: var(--ink); border-radius: 16px; padding: clamp(28px, 5vw, 44px); box-shadow: var(--shadow); border: 1px solid var(--line); }
+.final-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 56px); align-items: center; margin-top: 44px; }
+.field { margin-bottom: 20px; }
+.field label { display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; color: var(--green); }
+.field label .req { color: #C0392B; font-size: 0.74rem; margin-left: 5px; }
+.field input[type="text"], .field input[type="email"], .field input[type="tel"], .field textarea {
+    width: 100%; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px;
+    font-family: inherit; font-size: 1rem; background: #fff; color: var(--ink);
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(13, 59, 18, 0.12); }
+.name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.checks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.checks label { display: flex; align-items: center; gap: 9px; font-weight: 500; font-size: 0.92rem; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+.checks label:has(input:checked) { border-color: var(--green); background: var(--bg-alt); }
+.checks input { accent-color: var(--green); width: 17px; height: 17px; }
+.form-note { font-size: 0.8rem; color: var(--mute); margin-top: 16px; line-height: 1.7; }
+
+/* ---------- 共通：中央CTA・小注記 ---------- */
+.center-cta { text-align: center; margin-top: 40px; }
+.report-cap { text-align: center; font-size: 0.84rem; color: var(--mute); margin-top: 26px; }
+.flow-note { text-align: center; color: var(--mute); font-size: 0.92rem; margin-top: 28px; }
+.pc-foot-sub { font-size: 0.9rem; color: var(--mute); margin-top: 6px; }
+.price-card .pc-list li:last-child { margin-bottom: 4px; }
+
+/* ---------- フッター（白基調・軽い） ---------- */
+footer { background: var(--bg-alt); color: var(--mute); padding: 56px 0 36px; border-top: 1px solid var(--line); }
+.foot-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; flex-wrap: wrap; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+.foot-brand .fb-main { font-family: 'Montserrat'; font-weight: 800; letter-spacing: 0.14em; color: var(--green); font-size: 1.05rem; }
+.foot-brand .fb-sub { font-family: 'Noto Serif JP'; font-size: 0.84rem; color: var(--mute); margin-top: 4px; }
+.foot-links { display: flex; gap: 22px; flex-wrap: wrap; }
+.foot-links a { color: var(--mute); text-decoration: none; font-size: 0.88rem; }
+.foot-links a:hover { color: var(--green); }
+.foot-bottom { margin-top: 22px; font-size: 0.78rem; color: var(--mute); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+
+/* ---------- スマホ追従CTA ---------- */
+.sticky-cta {
+    position: fixed; left: 0; bottom: 0; width: 100%;
+    z-index: 900;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid var(--line);
+    transform: translateY(120%);
+    transition: transform 0.4s var(--ease);
+    display: none;
+}
+.sticky-cta.show { transform: translateY(0); }
+.sticky-cta .btn { width: 100%; padding: 14px; }
+
+/* ---------- リビール ---------- */
+[data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+[data-reveal].revealed { opacity: 1; transform: translateY(0); }
+
+/* ---------- レスポンシブ ---------- */
+@media (max-width: 900px) {
+    .about-grid, .diag-grid, .final-grid, .rep-grid, .dl-card { grid-template-columns: 1fr; }
+    .rep-grid { grid-template-columns: 1fr; }
+    .rep-photo { max-width: 280px; margin: 0 auto; }
+    .flow-grid { grid-template-columns: 1fr 1fr; }
+    .service-grid { grid-template-columns: 1fr 1fr; }
+    .addon-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 720px) {
+    .nav { display: none; }
+    .nav.open {
+        display: flex; flex-direction: column; align-items: flex-start; gap: 20px;
+        position: absolute; top: 68px; left: 0; width: 100%;
+        background: #fff; border-bottom: 1px solid var(--line); padding: 28px 24px 32px;
+    }
+    .nav.open .btn { width: 100%; }
+    .burger { display: flex; }
+    .result-grid { grid-template-columns: 1fr; }
+    .service-grid { grid-template-columns: 1fr; }
+    .addon-grid { grid-template-columns: 1fr; }
+    .pain-lead { grid-template-columns: 1fr; }
+    .checks { grid-template-columns: 1fr; }
+    .name-row { grid-template-columns: 1fr 1fr; }
+    .sticky-cta { display: block; }
+    .report-mock .sticky-note { right: 8px; }
+}
+@media (max-width: 420px) {
+    .flow-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    [data-reveal] { opacity: 1; transform: none; }
+}
