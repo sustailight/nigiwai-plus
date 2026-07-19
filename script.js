@@ -38,38 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
         revealEls.forEach(el => el.classList.add('revealed'));
     }
 
-    /* ===== 実績の数字カウントアップ（控えめ） ===== */
-    const counters = document.querySelectorAll('[data-count]');
-    const animateCount = (el) => {
-        const target = parseInt(el.dataset.count, 10);
-        if (reduceMotion || isNaN(target)) { return; }
-        const hasComma = el.textContent.indexOf(',') !== -1;
-        const duration = 1100;
-        const start = performance.now();
-        const step = (now) => {
-            const p = Math.min((now - start) / duration, 1);
-            const eased = 1 - Math.pow(1 - p, 3);
-            const val = Math.floor(eased * target);
-            el.textContent = hasComma ? val.toLocaleString('en-US') : val;
-            if (p < 1) requestAnimationFrame(step);
-            else el.textContent = hasComma ? target.toLocaleString('en-US') : target;
-        };
-        requestAnimationFrame(step);
-    };
-    if ('IntersectionObserver' in window) {
-        const cio = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (e.isIntersecting) { animateCount(e.target); cio.unobserve(e.target); }
-            });
-        }, { threshold: 0.6 });
-        counters.forEach(c => cio.observe(c));
-    }
-
     /* ===== スマホ追従CTA：ヒーローを過ぎたら表示、フォーム到達で隠す ===== */
     const sticky = document.getElementById('stickyCta');
     const hero = document.querySelector('.hero');
     const contact = document.getElementById('contact');
     const updateSticky = () => {
+        if (!sticky || !hero || !contact) return;
         const heroBottom = hero.getBoundingClientRect().bottom;
         const contactTop = contact.getBoundingClientRect().top;
         const past = heroBottom < 0;
@@ -91,6 +65,83 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const y = target.getBoundingClientRect().top + window.scrollY - 60;
             window.scrollTo({ top: y, behavior: reduceMotion ? 'auto' : 'smooth' });
+        });
+    });
+
+    /* ===== 代表写真：ホバーで一瞬ホワイトアウトして別カットに切替 ===== */
+    const repPhoto = document.getElementById('repPhoto');
+    if (repPhoto) {
+        const flash = repPhoto.querySelector('.rp-flash');
+        let swapping = false;
+        const swapTo = (alt) => {
+            if (repPhoto.classList.contains('no-alt') || swapping || reduceMotion) {
+                // 動きを減らす設定・代替写真なしの場合は即時切替のみ
+                if (!repPhoto.classList.contains('no-alt')) repPhoto.classList.toggle('alt', alt);
+                return;
+            }
+            swapping = true;
+            flash.style.transition = 'opacity 0.1s ease-in';
+            flash.style.opacity = '1';
+            setTimeout(() => {
+                repPhoto.classList.toggle('alt', alt);
+                flash.style.transition = 'opacity 0.45s ease-out';
+                flash.style.opacity = '0';
+                setTimeout(() => { swapping = false; }, 450);
+            }, 110);
+        };
+        repPhoto.addEventListener('mouseenter', () => swapTo(true));
+        repPhoto.addEventListener('mouseleave', () => swapTo(false));
+        // タッチ端末はタップで切替
+        repPhoto.addEventListener('touchstart', () => swapTo(!repPhoto.classList.contains('alt')), { passive: true });
+    }
+
+    /* ===== Googleフォーム送信（隠しiframeにPOST → サンクスページへ） ===== */
+    const gframe = document.getElementById('gformFrame');
+    let pendingThanks = null;
+    let submitTimer = null;
+
+    if (gframe) {
+        gframe.addEventListener('load', () => {
+            // Googleフォームへの送信完了（レスポンスは読めないがloadは発火する）
+            if (pendingThanks) {
+                const url = pendingThanks;
+                pendingThanks = null;
+                if (submitTimer) { clearTimeout(submitTimer); submitTimer = null; }
+                window.location.href = url;
+            }
+        });
+    }
+
+    document.querySelectorAll('form[data-gform]').forEach(form => {
+        form.addEventListener('submit', (e) => {
+            // 接続前（プレースホルダのまま）は送信させず案内する
+            if (form.action.indexOf('REPLACE_') !== -1) {
+                e.preventDefault();
+                alert('フォームは現在準備中です。お手数ですが msr.sustailight@gmail.com、または 080-3284-7050 までご連絡ください。');
+                return;
+            }
+            // 興味チェックを1つのテキストに結合して隠しフィールドへ（Googleフォーム側は記述式）
+            const interestTarget = form.querySelector('[data-interest-target]');
+            if (interestTarget) {
+                const vals = Array.prototype.map.call(
+                    form.querySelectorAll('input[data-interest]:checked'),
+                    (c) => c.value
+                );
+                interestTarget.value = vals.length ? vals.join('、') : '（未選択）';
+            }
+            // 送信中表示
+            const btn = form.querySelector('button[type="submit"]');
+            if (btn) { btn.disabled = true; btn.textContent = '送信中…'; }
+            pendingThanks = form.dataset.thanks || 'thanks.html';
+            // 万一 iframe の load が発火しない場合の保険（2.5秒で遷移）
+            submitTimer = setTimeout(() => {
+                if (pendingThanks) {
+                    const url = pendingThanks;
+                    pendingThanks = null;
+                    window.location.href = url;
+                }
+            }, 2500);
+            // preventDefaultしない＝そのまま target=gform-frame へPOSTされる
         });
     });
 });
