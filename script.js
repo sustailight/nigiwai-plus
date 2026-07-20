@@ -38,6 +38,39 @@ document.addEventListener('DOMContentLoaded', () => {
         revealEls.forEach(el => el.classList.add('revealed'));
     }
 
+    /* ===== 実績の数字：スクロールでカウントアップ ===== */
+    const countEls = document.querySelectorAll('[data-count]');
+    const formatNum = (n, withComma) => withComma ? n.toLocaleString('en-US') : String(n);
+    const runCount = (el) => {
+        const target = parseInt(el.getAttribute('data-count'), 10);
+        if (isNaN(target)) return;
+        const withComma = (el.textContent || '').indexOf(',') !== -1 || target >= 1000;
+        if (reduceMotion) { el.textContent = formatNum(target, withComma); return; }
+        const duration = 1400;
+        let startTime = null;
+        const step = (ts) => {
+            if (startTime === null) startTime = ts;
+            const p = Math.min((ts - startTime) / duration, 1);
+            const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+            el.textContent = formatNum(Math.round(target * eased), withComma);
+            if (p < 1) requestAnimationFrame(step);
+            else el.textContent = formatNum(target, withComma);
+        };
+        requestAnimationFrame(step);
+    };
+    if (countEls.length) {
+        if ('IntersectionObserver' in window && !reduceMotion) {
+            const co = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) { runCount(e.target); co.unobserve(e.target); }
+                });
+            }, { threshold: 0.6 });
+            countEls.forEach(el => { el.textContent = '0'; co.observe(el); });
+        } else {
+            countEls.forEach(runCount);
+        }
+    }
+
     /* ===== スマホ追従CTA：ヒーローを過ぎたら表示、フォーム到達で隠す ===== */
     const sticky = document.getElementById('stickyCta');
     const hero = document.querySelector('.hero');
